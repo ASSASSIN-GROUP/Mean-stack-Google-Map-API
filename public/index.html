@@ -15,7 +15,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_HERE"></script>
     <!--Modernizr-->
     <script src="../bower_components/modernizr/bin/modernizr"></script>
-    <script src="../bower_components/jquery/jquery.js"></script>
+    <script src="../bower_components/jquery/src/jquery.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js"></script>
@@ -85,7 +85,7 @@
                                 <label for="verified">HTML5 Verified Location?<span><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-refresh"></span></button></span></label>
                                 <input type="text" class="form-control" id="verified" placeholder="Nope (Thanks for spamming my app...)" ng-model="formData.htmlverified" readonly>
                             </div>
-                            <button type="submit" class="btn btn-danger btn-block" ng-disabled="addForm.$invalid">
+                            <button type="submit" class="btn btn-danger btn-block" ng-disabled="addForm.$invalid">Submit</button>
                         </form>
                     </div>
                 </div>
