@@ -8,6 +8,17 @@ var addCtrl = angular.module('addCtrl', ['geolocation', 'gservice'])
 
     $scope.formData.latitude = 39.500;
     $scope.formData.longitude = -98.350;
+
+    //Get user's actual coordinates based on HTML5 at window load
+    geolocation.getLocation().then(function(data){
+        //set the latitued and longitude equal to HTML5 coordinates
+        coords = {lat:data.coords.latitude, long:data.coords.longitude};
+        $scope.formData.longitude = parseFloat(coords.long).toFixed(3);
+        $scope.formData.latitude = parseFloat(coords.lat).toFixed(3);
+        $scope.formData.htmlverified = "Yep (Thanks for giving us real data!)";
+
+        gservice.refresh($scope.formData.latitude, $scope.formData.longitude);
+    });
     
     //Get coordinates based on mouse click.
     $rootScope.$on("clicked", function(){
