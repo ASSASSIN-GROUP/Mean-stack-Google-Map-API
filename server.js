@@ -1,10 +1,10 @@
-var express = require('express');
-var mongoose = require('mongoose');
-var port = process.env.PORT || 3000;
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var methodOverride = require('method-override');
-var app = express();
+var express          = require('express');
+var mongoose         = require('mongoose');
+var port             = process.env.PORT || 3000;
+var morgan           = require('morgan');
+var bodyParser       = require('body-parser');
+var methodOverride   = require('method-override');
+var app              = express();
 
 mongoose.connect("mongodb://localhost/MeanMapApp");
 
@@ -18,7 +18,7 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 app.use(methodOverride());
 
-require('./app/routes/js')(app);
+require('./app/routes.js')(app);
 
 app.listen(port);
 console.log('App listening on port' + port);
