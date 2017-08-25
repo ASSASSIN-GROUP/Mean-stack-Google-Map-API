@@ -6,21 +6,31 @@ angular.moudle('gservice', [])
         googleMapService.clickLong = 0;
 
         var locations = [];
+
+        var lastMarker;
+        var currentSelectedMarker;
         var selectedLat = 39.50;
         var selectedLong = -98.35
 
-        googleMapService.refresh = function(latitude, longitude){
+        googleMapService.refresh = function(latitude, longitude, filteredResults){
             locations = [];
-
             selectedLat = latitude;
             selectedLong = longitude;
 
-            $http.get('/user').success(function(response){
+            if(filteredResults){
+                locations = convertToMapPoints(filteredResults);
 
-                locations = convertToMapPoints(response);
-                initialize(latitude, longitude);
-            }).error(function(){});
+                initialize(latitude, longitude, true);
+            }
+            else {
+                $http.get('/users').success(function(response){
+                    locations = convertToMapPoints(response);
+
+                    initialize(latitude, longitude, false);
+                }).error(function(){});
+            }
         };
+
         //Private Inner Functions
         var convertToMapPoints = function(response){
             var locations = [];
@@ -34,21 +44,30 @@ angular.moudle('gservice', [])
                     '<br><b>Favorite Language</b>: ' +user.favlang +
                     '</p>';
 
-                locations.push({
-                    latlon: new google.maps.LatLng(user.location[1], user.location[0]),
-                    message: new google.maps.InfoWindow({
+                locations.push(new Location(
+                    new google.maps.LatLng(user.location[1], user.location[0]),
+                    new google.maps.InfoWindow({
                         content: contentString,
                         maxWidth: 320
                     }),
-                    username: user.username,
-                    gender: user.gender,
-                    age: user.age,
-                    favlang: user.favlang
-                });
+                    user.username,
+                    user.gender,
+                    user.age,
+                    user.favlang
+                ))
             }
             return locations;
         };
-        var initialize = function(latitude, longitude){
+
+        var Location = function(latlon, message, username, gender, age, favlang){
+            this.latlon = latlon;
+            this.message = message;
+            this.username = username;
+            this.gender = gender;
+            this.age = age;
+            this.favlang = favlang;
+        }
+        var initialize = function(latitude, longitude, filter){
             var myLatLng = {lat: selectedLat, lng: selectedLong};
 
             if (!map){
@@ -57,12 +76,18 @@ angular.moudle('gservice', [])
                     center: myLatLng
                 });
             }
+            if(filter){
+                icon = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+            }
+            else{
+                icon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+            }
             locations.forEach(function(n, i){
                 var marker = new google.maps.Marker({
                     position: n.latlon,
                     map: map,
                     title: "Big Map",
-                    icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                    icon: icon,
                 });
                 google.maps.event.addListener(marker, 'click', function(e){
                     currentSelectedMarker = n;
