@@ -31,8 +31,8 @@
     <div class="container">
         <div class="header">
             <ul class="nav nav-pills pull-right">
-                <li active><a href="/#/join">Join the Team</a></li>
-                <li disabled><a href="/#/find">Find Teammates</a></li>
+                <li ng-class="{ active: isActive('/join')}"><a href="/#/join">Join the Team</a></li>
+                <li ng-class="{ active: isActive('/find')}"><a href="/#/find">Find Teammates</a></li>
             </ul>
             <h3 class="text-muted">MEAN Google Map API</h3>
         </div>
