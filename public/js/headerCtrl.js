@@ -3,4 +3,4 @@ var headerCtrl = angular.module('headerCtrl', [])
         $scope.isActive = function(viewLocation){
             return viewLocation === $location.path();
         };
-    });
+});
