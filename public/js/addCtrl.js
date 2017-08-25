@@ -29,6 +29,17 @@ var addCtrl = angular.module('addCtrl', ['geolocation', 'gservice'])
         });
     });
 
+    $scope.refreshLoc = function(){
+        geolocation.getLocation().then(function(data){
+            coords = {lat:data.coords.latitude, long:data.coords.longitude};
+
+            $scope.formData.longitude = parseFloat(coords.long).toFixed(3);
+            $scope.formData.latitude = parseFloat(coords.lat).toFixed(3);
+            $scope.formData.htmlverified = "Yep (Thanks for giving us real data!)";
+            gservice.refresh(coords.lat, coords.long);
+        });
+    };
+
     //Create user function
     $scope.createUser = function(){
         var userData = {
